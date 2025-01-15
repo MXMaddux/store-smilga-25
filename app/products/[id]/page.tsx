@@ -6,13 +6,11 @@ import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
 import AddToCart from "@/components/single-product/AddToCart";
 import ProductRating from "@/components/single-product/ProductRating";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
+type Params = {
+  id: string;
 };
 
-async function SingleProductPage({ params }: PageProps) {
+async function SingleProductPage({ params }: { params: Params }) {
   const product = await fetchSingleProduct(params.id);
   const { name, image, company, description, price } = product;
   const dollarsAmount = formatCurrency(price);
