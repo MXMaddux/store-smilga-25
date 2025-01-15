@@ -12,21 +12,13 @@ type SingleProductPageProps = {
   };
 };
 
-export default async function SingleProductPage({
-  params,
-}: SingleProductPageProps) {
+async function SingleProductPage({ params }: SingleProductPageProps) {
   const product = await fetchSingleProduct(params.id);
-
-  if (!product) {
-    throw new Error("Product not found");
-  }
-
   const { name, image, company, description, price } = product;
   const dollarsAmount = formatCurrency(price);
-
   return (
     <section>
-      <BreadCrumbs name={name} />
+      <BreadCrumbs name={product.name} />
       <div className="mt-6 grid gap-y-8 lg:grid-cols-2 lg:gap-x-16">
         {/* IMAGE FIRST COL */}
         <div className="relative h-full">
@@ -57,3 +49,4 @@ export default async function SingleProductPage({
     </section>
   );
 }
+export default SingleProductPage;
