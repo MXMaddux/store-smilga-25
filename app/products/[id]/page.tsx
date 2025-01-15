@@ -6,17 +6,27 @@ import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
 import AddToCart from "@/components/single-product/AddToCart";
 import ProductRating from "@/components/single-product/ProductRating";
 
-interface Params {
-  id: string;
-}
+type SingleProductPageProps = {
+  params: {
+    id: string;
+  };
+};
 
-async function SingleProductPage({ params }: { params: Params }) {
+export default async function SingleProductPage({
+  params,
+}: SingleProductPageProps) {
   const product = await fetchSingleProduct(params.id);
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
   const { name, image, company, description, price } = product;
   const dollarsAmount = formatCurrency(price);
+
   return (
     <section>
-      <BreadCrumbs name={product.name} />
+      <BreadCrumbs name={name} />
       <div className="mt-6 grid gap-y-8 lg:grid-cols-2 lg:gap-x-16">
         {/* IMAGE FIRST COL */}
         <div className="relative h-full">
@@ -47,4 +57,3 @@ async function SingleProductPage({ params }: { params: Params }) {
     </section>
   );
 }
-export default SingleProductPage;
