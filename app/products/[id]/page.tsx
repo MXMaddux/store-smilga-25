@@ -50,6 +50,7 @@ import ProductRating from "@/components/single-product/ProductRating";
 //   );
 // }
 // export default SingleProductPage;
+
 interface Params {
   id: string;
 }
