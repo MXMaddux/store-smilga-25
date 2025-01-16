@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-const inter = Inter({ subsets: ["latin"] });
-// after instructor help
+import Navbar from "@/components/navbar/Navbar";
+import Container from "@/components/global/Container";
+import Providers from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next Storefront",
@@ -18,7 +20,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <Providers>
+            <Navbar />
+            <Container className="py-20">{children}</Container>
+          </Providers>
+        </body>
       </html>
     </ClerkProvider>
   );

@@ -54,15 +54,15 @@ export const fetchSingleProduct = async (productId: string) => {
   return product;
 };
 
-export const fetchUserFavorites = async () => {
-  const user = await getAuthUser();
-  const favorites = await db.favorite.findMany({
-    where: {
-      clerkId: user.id,
-    },
-    include: {
-      product: true,
-    },
-  });
-  return favorites;
-};
+// export const fetchUserFavorites = async () => {
+//   const user = await getAuthUser();
+//   const favorites = await db.favorite.findMany({
+//     where: {
+//       clerkId: user.id,
+//     },
+//     include: {
+//       product: true,
+//     },
+//   });
+//   return favorites;
+// };
