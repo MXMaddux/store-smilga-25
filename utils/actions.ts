@@ -12,6 +12,7 @@ import {
 import { deleteImage, uploadImage } from "./supabase";
 import { revalidatePath } from "next/cache";
 // import { Cart } from "@prisma/client";
+
 const getAuthUser = async () => {
   const user = await currentUser();
   if (!user) redirect("/");
@@ -137,6 +138,7 @@ export const updateProductAction = async (
   try {
     const productId = formData.get("id") as string;
     const rawData = Object.fromEntries(formData);
+
     const validatedFields = validateWithZodSchema(productSchema, rawData);
 
     await db.product.update({
@@ -148,11 +150,14 @@ export const updateProductAction = async (
       },
     });
     revalidatePath(`/admin/products/${productId}/edit`);
+    console.log("Product updated successfully");
     return { message: "Product updated successfully" };
   } catch (error) {
+    console.log("Error updating product:", error);
     return renderError(error);
   }
 };
+
 export const updateProductImageAction = async (
   prevState: any,
   formData: FormData

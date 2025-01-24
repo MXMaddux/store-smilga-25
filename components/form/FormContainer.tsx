@@ -2,8 +2,9 @@
 
 import { useFormState } from "react-dom";
 import { useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import { actionFunction } from "@/utils/types";
+import { toast } from "sonner";
 
 const initialState = {
   message: "",
@@ -17,11 +18,12 @@ function FormContainer({
   children: React.ReactNode;
 }) {
   const [state, formAction] = useFormState(action, initialState);
-  const { toast } = useToast();
+  // const { toast } = useToast();
   useEffect(() => {
-    console.log("Form State: ", state);
+    console.log("Form state:", state);
     if (state.message) {
-      toast({ description: state.message });
+      // toast({ description: state.message });
+      toast(state.message);
     }
   }, [state]);
   return <form action={formAction}>{children}</form>;
