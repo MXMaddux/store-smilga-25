@@ -62,5 +62,4 @@ async function ProductsContainer({
     </>
   );
 }
-
 export default ProductsContainer;
