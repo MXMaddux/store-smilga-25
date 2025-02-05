@@ -561,7 +561,6 @@ export const createOrderAction = async (prevState: any, formData: FormData) => {
       errorOnFailure: true,
     });
     cartId = cart.id;
-
     await db.order.deleteMany({
       where: {
         clerkId: user.id,
@@ -581,7 +580,7 @@ export const createOrderAction = async (prevState: any, formData: FormData) => {
     });
     orderId = order.id;
   } catch (error) {
-    renderError(error);
+    return renderError(error);
   }
   redirect(`/checkout?orderId=${orderId}&cartId=${cartId}`);
 };
