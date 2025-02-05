@@ -331,6 +331,7 @@ export const deleteReviewAction = async (prevState: { reviewId: string }) => {
     return { message: "review deleted successfully" };
   } catch (error) {
     renderError(error);
+    return { message: "An error occurred during deletion" };
   }
 };
 
