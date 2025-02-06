@@ -319,7 +319,7 @@ export const fetchProductReviewsByUser = async () => {
 
 export const deleteReviewAction = async (prevState: { reviewId: string }) => {
   const { reviewId } = prevState;
-  console.log(reviewId);
+
   const user = await getAuthUser();
   try {
     await db.review.delete({
