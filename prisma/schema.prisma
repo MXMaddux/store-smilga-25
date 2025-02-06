@@ -1,86 +1,71 @@
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
+  provider = "mongodb"
+  url      = env("MONGO_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-
 model Product {
-  id           String     @id @default(uuid())
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   company     String
   description String
-  featured   Boolean
+  featured    Boolean
   image       String
   price       Int
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  clerkId  String
-  favorites Favorite[]
-  reviews Review[]
-  cartItems CartItem[]
-}
-
-model Cart {
-  id        String   @id @default(uuid())
-  clerkId  String
-  cartItems CartItem[]
-  numItemsInCart Int @default(0)
-  cartTotal Int @default(0)
-  shipping Int @default(5)
-  tax Int @default(0)
-  taxRate Float @default(0.1)
-  orderTotal Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model CartItem {
-  id        String   @id @default(uuid())
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  cart     Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId   String
-  amount  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  clerkId     String
+  favorites   Favorite[] @relation("ProductFavorites")
+  reviews     Review[]   @relation("ProductReviews")
+  cartItems   CartItem[] @relation("ProductCartItems")
 }
 
 model Favorite {
-  id        String   @id @default(uuid())
-  clerkId  String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId   String
+  productId String   @db.ObjectId
+  product   Product  @relation("ProductFavorites", fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Review {
-  id        String   @id @default(uuid())
-  clerkId  String
-  rating Int
-  comment String
-  authorName String
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId        String
+  rating         Int
+  comment        String
+  authorName     String
   authorImageUrl String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
+  productId      String   @db.ObjectId
+  product        Product  @relation("ProductReviews", fields: [productId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
-model Order {
-  id        String   @id @default(uuid())
-  clerkId  String
-  products Int  @default(0)
-  orderTotal Int @default(0)
-  tax Int @default(0)
-  shipping Int @default(0)
-  email String
-  isPaid Boolean @default(false)
+model Cart {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId        String
+  cartItems      CartItem[] @relation("CartItems")
+  numItemsInCart Int        @default(0)
+  cartTotal      Int        @default(0)
+  shipping       Int        @default(5)
+  tax            Int        @default(0)
+  taxRate        Float      @default(0.1)
+  orderTotal     Int        @default(0)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation("ProductCartItems", fields: [productId], references: [id], onDelete: Cascade)
+  cartId    String   @db.ObjectId
+  cart      Cart     @relation("CartItems", fields: [cartId], references: [id], onDelete: Cascade)
+  amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
